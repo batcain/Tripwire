@@ -6,6 +6,6 @@ It reads from auth.log file of your server. It searches for the log file in its 
   pip3 -m install requirements.txt
   python3 Trigger.py 
   ```
-  
-  Should work just fine.
+  Before running with python3 don't forget to add your telegram bot token to Trigger.py and your log file name to tripwire.py.
+  After that it should work just fine.
   
