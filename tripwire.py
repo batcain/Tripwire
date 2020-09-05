@@ -19,15 +19,13 @@ class GatherLogs:
 
     # Opens and reads your backed up logfile. Then makes "grep" operation based on pattern given as parameter.
     def droplog(self, pattern):
-        logfile = open("log.log") #Enter your log file to read.
-        lines = list(logfile.readlines())
-        list_of_matches = []
-
-        for line in lines:
-            if re.search(pattern, line):
-                list_of_matches.append(line)
-
-        return list_of_matches
+        #Enter your log file to read.
+        matches = []
+        with open("YOUR LOG FILE HERE") as infile:
+            for line in infile:
+                if re.search(pattern, line):
+                    matches.append(line)
+        return matches
 
     #Enumerates through backed-up data granted acces lines and sends date-time and IP that access granted.
     def granted(self, update, context):
@@ -53,22 +51,22 @@ class GatherLogs:
     def denied(self, update, context):
         pattern = "Disconnected from authenticating user"
         line = self.droplog(pattern)
-        send_report = open("Report.txt", "w")
+        with open("Report.txt", "w") as send_report:
 
-        for row in line:
-            raw = row.split()
-            IP = raw[10]
-            port = raw[12]
-            time_date = raw[0] + raw[1] + "  >> " + raw[2]
+            for row in line:
+                raw = row.split()
+                IP = raw[10]
+                port = raw[12]
+                time_date = raw[0] + raw[1] + "  >> " + raw[2]
 
-            IPloc = self.geoip(IP)
-            IPloc["Port"] = port
-            IPloc["Time-Date"] = time_date
+                IPloc = self.geoip(IP)
+                IPloc["Port"] = port
+                IPloc["Time-Date"] = time_date
 
-            send_report.write(str(json.dump(IPloc, send_report))+"\n\n\n")
+                send_report.write(str(json.dump(IPloc, send_report))+"\n\n\n")
 
-        last_report = open("Report.txt", "rb")
-        context.bot.send_document(chat_id=update.effective_chat.id, document=last_report)
+        send_report = open("Report.txt", "rb")
+        context.bot.send_document(chat_id=update.effective_chat.id, document=send_report)
 
     #Internet connection is necessary, geoip information is extracted by get request to http://ipwhois.app/json url.
     def geoip(self, loginIP):
