@@ -51,7 +51,6 @@ class GatherLogs:
     # Shows unsuccessful login attempts. Then uses geoip get request to search about intruder IP and writes information to Report.txt
     # Only when command is used it sends Report.txt
     def denied(self, update, context):
-        global dump, IPloc
         pattern = "Disconnected from authenticating user"
         line = self.droplog(pattern)
         send_report = open("Report.txt", "w")
