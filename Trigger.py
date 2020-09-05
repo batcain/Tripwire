@@ -1,4 +1,4 @@
-from BatDrone import GatherLogs
+from tripwire import GatherLogs
 
 instance = GatherLogs("YOUR-BOT-TOKEN-HERE")
 
